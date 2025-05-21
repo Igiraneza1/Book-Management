@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
@@ -7,37 +8,53 @@ import { Book } from "../../../types/book";
 export default function EditBookPage() {
   const { id } = useParams();
   const router = useRouter();
+
   const [form, setForm] = useState<Book>({
-    id: "",
+    _id: "",
     title: "",
     author: "",
-    ISBN: "",
-    year: "",
+    isbn: "",
+    publishedYear: "",
   });
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!id) return;
-    axios
-      .get(`http://localhost:4000/api/v1/books/${id}`)
-      .then((res) => {
-        setForm(res.data);
+    async function fetchBook() {
+      if (!id) return;
+      try {
+        const res = await axios.get(`http://localhost:4000/api/v1/books/${id}`);
+        const bookData = res.data;
+        setForm({
+          _id: bookData.id || "",
+          title: bookData.title || "",
+          author: bookData.author || "",
+          isbn: bookData.isbn || "",
+          publishedYear: bookData.publishedYear || "",
+        });
+      } catch (error) {
+        console.error("Failed to fetch book", error);
+        alert("Failed to load book data.");
+      } finally {
         setLoading(false);
-      })
-      .catch(() => setLoading(false));
+      }
+    }
+    fetchBook();
   }, [id]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:4000/api/v1/books/${id}`, form);
-      router.push(`/books/${id}`);
+      await axios.put(`http://localhost:4000/api/v1/books/${form._id}`, form);
+      alert("Book updated successfully!");
+      router.push(`/books`);
     } catch (error) {
       console.error("Failed to update book", error);
+      alert("Failed to update book. Please try again.");
     }
   };
 
@@ -52,6 +69,7 @@ export default function EditBookPage() {
           name="title"
           value={form.title}
           onChange={handleChange}
+          placeholder="Title"
           required
           className="border p-2 rounded"
         />
@@ -60,31 +78,43 @@ export default function EditBookPage() {
           name="author"
           value={form.author}
           onChange={handleChange}
+          placeholder="Author"
           required
           className="border p-2 rounded"
         />
         <input
           type="text"
-          name="ISBN"
-          value={form.ISBN}
+          name="isbn"
+          value={form.isbn}
           onChange={handleChange}
+          placeholder="ISBN"
           required
           className="border p-2 rounded"
         />
-        <textarea
-          name="description"
-          value={form.year}
+        <input
+          type="text"
+          name="publishedYear"
+          value={form.publishedYear}
           onChange={handleChange}
+          placeholder="Published Year"
           required
           className="border p-2 rounded"
-          rows={4}
         />
-        <button
-          type="submit"
-          className="bg-green-600 text-white py-2 rounded hover:bg-green-700 transition"
-        >
-          Save Changes
-        </button>
+        <div className="flex space-x-4">
+          <button
+            type="submit"
+            className="bg-green-600 text-white py-2 rounded hover:bg-green-700 transition"
+          >
+            Save Changes
+          </button>
+          <button
+            type="button"
+            onClick={() => router.push(`/books`)}
+            className="bg-gray-400 text-white py-2 rounded hover:bg-gray-500 transition"
+          >
+            Cancel
+          </button>
+        </div>
       </form>
     </div>
   );
