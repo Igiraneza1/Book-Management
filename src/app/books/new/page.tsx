@@ -10,7 +10,7 @@ export default function NewBookPage() {
     title: "",
     author: "",
     ISBN: "",
-    description: "",
+    year: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -31,42 +31,51 @@ export default function NewBookPage() {
     <div className="max-w-xl mx-auto p-6">
       <h1 className="text-2xl font-bold mb-4">Add New Book</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <label htmlFor="" className="flex flex-col gap-1">Title
         <input
           type="text"
           name="title"
-          placeholder="Title"
+          placeholder="Enter book title"
           value={form.title}
           onChange={handleChange}
           required
-          className="border p-2 rounded"
+          className="p-2 rounded focus:border-2 focus:border-blue-500 border-1 border-gray-200"
         />
+        </label>
+        <label className="flex flex-col gap-1">Author
         <input
           type="text"
           name="author"
-          placeholder="Author"
+          placeholder="Enter Author name"
           value={form.author}
           onChange={handleChange}
           required
-          className="border p-2 rounded"
+          className="p-2 rounded focus:border-2 focus:border-blue-500 border-1 border-gray-200"
         />
+        </label>
+        <label className="flex flex-col gap-1">ISBN
         <input
-          type="text"
+          type="number"
+          inputMode="numeric"
           name="ISBN"
-          placeholder="ISBN"
+          placeholder="Enter ISBN number"
           value={form.ISBN}
           onChange={handleChange}
           required
-          className="border p-2 rounded"
+          className="p-2 rounded focus:border-2 focus:border-blue-500 border-1 border-gray-200"
         />
-        <textarea
-          name="description"
-          placeholder="Description"
-          value={form.description}
+        </label>
+        <label className="flex flex-col gap-1">Published Year
+        <input
+          name="year"
+          type="number"
+          placeholder="E.g., 2023"
+          value={form.year}
           onChange={handleChange}
           required
-          className="border p-2 rounded"
-          rows={4}
+          className="p-2 rounded focus:border-2 border-1 border-gray-200"
         />
+        </label>
         <button
           type="submit"
           className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"

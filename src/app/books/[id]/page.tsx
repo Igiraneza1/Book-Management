@@ -28,7 +28,7 @@ export default function BookDetailsPage() {
       <h1 className="text-3xl font-bold mb-4">{book.title}</h1>
       <p><strong>Author:</strong> {book.author}</p>
       <p><strong>ISBN:</strong> {book.ISBN}</p>
-      <p className="mt-4">{book.description}</p>
+      <p className="mt-4">{book.year}</p>
     </div>
   );
 }

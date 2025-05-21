@@ -12,7 +12,7 @@ export default function EditBookPage() {
     title: "",
     author: "",
     ISBN: "",
-    description: "",
+    year: "",
   });
   const [loading, setLoading] = useState(true);
 
@@ -73,7 +73,7 @@ export default function EditBookPage() {
         />
         <textarea
           name="description"
-          value={form.description}
+          value={form.year}
           onChange={handleChange}
           required
           className="border p-2 rounded"
