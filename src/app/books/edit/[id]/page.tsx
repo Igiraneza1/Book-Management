@@ -2,13 +2,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
-import { Book } from "../../types/book";
+import { Book } from "../../../types/book";
 
 export default function EditBookPage() {
   const { id } = useParams();
   const router = useRouter();
   const [form, setForm] = useState<Book>({
-    _id: "",
+    id: "",
     title: "",
     author: "",
     ISBN: "",
