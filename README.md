@@ -1,11 +1,11 @@
 # get
-https://shecancode-book-backend.onrender.com/api-docs/#/default/get_books
+http://localhost:4000/api/v1/books
 
 # post
-https://shecancode-book-backend.onrender.com/api-docs/#/default/post_books
+http://localhost:4000/api/v1/books
 
 # put
-https://shecancode-book-backend.onrender.com/api-docs/#/default/put_books__id_
+http://localhost:4000/api/v1/books/${book.id}
 
 # delete
-https://shecancode-book-backend.onrender.com/api-docs/#/default/delete_books__id_
+http://localhost:4000/api/v1/books/${id}
