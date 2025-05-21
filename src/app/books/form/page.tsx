@@ -16,7 +16,7 @@ const BookForm = ({ isEdit, initialData, onSubmit, loading }: BookFormProps) => 
     title: "",
     author: "",
     isbn: "",
-    publishedYear: "", // optional if needed
+    publishedYear: 0, // optional if needed
   });
 
   useEffect(() => {
@@ -25,8 +25,8 @@ const BookForm = ({ isEdit, initialData, onSubmit, loading }: BookFormProps) => 
           _id: initialData._id || "",
           title: initialData.title || "",
           author: initialData.author || "",
-          isbn: initialData.isbn || "",
-          publishedYear: initialData.publishedYear || "",
+          isbn: initialData.isbn,
+          publishedYear: initialData.publishedYear,
         });
       }
     }, [initialData]);
@@ -106,22 +106,6 @@ const BookForm = ({ isEdit, initialData, onSubmit, loading }: BookFormProps) => 
         />
       </div>
 
-      {/* Optional Year Field (Remove if not needed) */}
-      {/* 
-      <div>
-        <label htmlFor="publishedYear" className="block text-sm font-medium text-gray-700">
-          Published Year
-        </label>
-        <input
-          id="publishedYear"
-          name="publishedYear"
-          type="text"
-          value={formData.publishedYear}
-          onChange={handleChange}
-          className="w-full mt-1 px-4 py-2 border rounded-md shadow-sm"
-        />
-      </div> 
-      */}
 
       <button
         type="submit"

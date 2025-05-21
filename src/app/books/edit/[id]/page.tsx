@@ -14,7 +14,7 @@ export default function EditBookPage() {
     title: "",
     author: "",
     isbn: "",
-    publishedYear: "",
+    publishedYear: 0,
   });
 
   const [loading, setLoading] = useState(true);
@@ -25,12 +25,13 @@ export default function EditBookPage() {
       try {
         const res = await axios.get(`http://localhost:4000/api/v1/books/${id}`);
         const bookData = res.data;
+
         setForm({
-          _id: bookData.id || "",
+          _id: bookData._id || "", // use _id, not id
           title: bookData.title || "",
           author: bookData.author || "",
           isbn: bookData.isbn || "",
-          publishedYear: bookData.publishedYear || "",
+          publishedYear: bookData.publishedYear || 0,
         });
       } catch (error) {
         console.error("Failed to fetch book", error);
@@ -43,11 +44,16 @@ export default function EditBookPage() {
   }, [id]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setForm((prevForm) => ({
+      ...prevForm,
+      [name]: name === "publishedYear" ? Number(value) : value,
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     try {
       await axios.put(`http://localhost:4000/api/v1/books/${form._id}`, form);
       alert("Book updated successfully!");
@@ -92,7 +98,7 @@ export default function EditBookPage() {
           className="border p-2 rounded"
         />
         <input
-          type="text"
+          type="number"
           name="publishedYear"
           value={form.publishedYear}
           onChange={handleChange}
@@ -103,14 +109,14 @@ export default function EditBookPage() {
         <div className="flex space-x-4">
           <button
             type="submit"
-            className="bg-green-600 text-white py-2 rounded hover:bg-green-700 transition"
+            className="bg-green-600 text-white p-2 rounded hover:bg-green-700 transition"
           >
-            Save Changes
+            Update Book
           </button>
           <button
             type="button"
             onClick={() => router.push(`/books`)}
-            className="bg-gray-400 text-white py-2 rounded hover:bg-gray-500 transition"
+            className="bg-gray-400 text-white p-2 rounded hover:bg-gray-500 transition"
           >
             Cancel
           </button>

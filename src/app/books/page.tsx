@@ -8,24 +8,31 @@ import { Book } from "../types/book";
 function HomePage() {
   const [books, setBooks] = useState<Book[]>([]);
   const [loading, setLoading] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   // Fetch books from backend
   useEffect(() => {
     const fetchBooks = async () => {
+      setLoading(true);
       try {
         const res = await axios.get("http://localhost:4000/api/v1/books");
+        console.log("API Response:", res.data);
         
-        console.log("Fetched books raw data:", res.data);
-
-        // Normalize keys (optional if backend already uses consistent keys)
-        const normalized = res.data.map((b: Book) => ({
-          ...b,
-          isbn: b.isbn,
-          year: b.publishedYear,
+        // Ensure data matches Book interface
+        const validatedBooks = res.data.map((book: Book) => ({
+          _id: book._id,
+          title: book.title || "Untitled",
+          author: book.author || "Unknown Author",
+          isbn: book.isbn || "N/A",
+          publishedYear: book.publishedYear || "Unknown Year"
         }));
-        setBooks(normalized);
+        
+        setBooks(validatedBooks);
       } catch (error) {
         console.error("Failed to fetch books", error);
+        alert("Failed to load books. Please try again.");
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -35,18 +42,27 @@ function HomePage() {
   // Delete handler
   const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this book?")) return;
-    setLoading(true);
+    setDeletingId(id);
     try {
       await axios.delete(`http://localhost:4000/api/v1/books/${id}`);
-      console.log("Deleted book with id:", id);
-      setBooks((prevBooks) => prevBooks.filter((book) => book._id !== id));
+      setBooks(prev => prev.filter(book => book._id !== id));
     } catch (error) {
-      console.error("Failed to delete book", error);
-      alert("Delete failed. See console for details.");
+      console.error("Delete error:", error);
+      alert(`Delete failed: ${axios.isAxiosError(error) 
+        ? error.response?.data?.message || error.message 
+        : "Unknown error"}`);
     } finally {
-      setLoading(false);
+      setDeletingId(null);
     }
   };
+
+  if (loading && books.length === 0) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-11/12 md:w-3/4 lg:w-2/3 mx-auto mt-8">
@@ -54,7 +70,7 @@ function HomePage() {
         <h1 className="font-bold text-3xl">📚 Book Collection</h1>
         <Link
           href="/books/new"
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow transition-colors"
         >
           + Add New Book
         </Link>
@@ -68,7 +84,7 @@ function HomePage() {
           </p>
           <Link
             href="/books/new"
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded transition-colors"
           >
             + Add New Book
           </Link>
@@ -86,8 +102,8 @@ function HomePage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
-              {books.map((book, index) => (
-                <tr key={book._id ?? index}>
+              {books.map((book) => (
+                <tr key={book._id}>
                   <td className="px-4 py-2">{book.title}</td>
                   <td className="px-4 py-2">{book.author}</td>
                   <td className="px-4 py-2">{book.isbn}</td>
@@ -95,16 +111,18 @@ function HomePage() {
                   <td className="px-4 py-2 text-center space-x-2">
                     <Link
                       href={`/books/edit/${book._id}`}
-                      className="bg-yellow-500 hover:bg-yellow-600 text-white text-xs px-3 py-1 rounded"
+                      className="bg-yellow-500 hover:bg-yellow-600 text-white text-xs px-3 py-1 rounded transition-colors"
                     >
                       Edit
                     </Link>
                     <button
                       onClick={() => handleDelete(book._id)}
-                      className="bg-red-500 hover:bg-red-600 text-white text-xs px-3 py-1 rounded"
-                      disabled={loading}
+                      disabled={deletingId === book._id}
+                      className={`bg-red-500 hover:bg-red-600 text-white text-xs px-3 py-1 rounded transition-colors ${
+                        deletingId === book._id ? "opacity-50" : ""
+                      }`}
                     >
-                      {loading ? "Deleting..." : "Delete"}
+                      {deletingId === book._id ? "Deleting..." : "Delete"}
                     </button>
                   </td>
                 </tr>

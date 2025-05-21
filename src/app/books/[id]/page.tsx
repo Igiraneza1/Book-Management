@@ -5,15 +5,15 @@ import axios from "axios";
 import { Book } from "../../types/book";
 
 export default function BookDetailsPage() {
-  const { id } = useParams();
+  const { _id } = useParams();
   const [book, setBook] = useState<Book | null>(null);
   const [loading, setLoading] = useState(true);
 
 useEffect(() => {
   const fetchBook = async () => {
-    if (!id) return;
+    if (!_id) return;
     try {
-      const res = await axios.get(`http://localhost:4000/api/v1/books/${id}`);
+      const res = await axios.get(`http://localhost:4000/api/v1/books/${_id}`);
       setBook(res.data);
     } catch (error) {
       console.error("Error fetching book:", error);
@@ -24,7 +24,7 @@ useEffect(() => {
   };
 
   fetchBook();
-}, [id]);
+}, [_id]);
 
 
   if (loading) return <p>Loading...</p>;
