@@ -27,7 +27,7 @@ export default function EditBookPage() {
         const bookData = res.data;
 
         setForm({
-          _id: bookData._id || "", // use _id, not id
+          _id: bookData._id || "", 
           title: bookData.title || "",
           author: bookData.author || "",
           isbn: bookData.isbn || "",
@@ -67,61 +67,81 @@ export default function EditBookPage() {
   if (loading) return <p>Loading...</p>;
 
   return (
-    <div className="max-w-xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-4">Edit Book</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <input
-          type="text"
-          name="title"
-          value={form.title}
-          onChange={handleChange}
-          placeholder="Title"
-          required
-          className="border p-2 rounded"
-        />
-        <input
-          type="text"
-          name="author"
-          value={form.author}
-          onChange={handleChange}
-          placeholder="Author"
-          required
-          className="border p-2 rounded"
-        />
-        <input
-          type="text"
-          name="isbn"
-          value={form.isbn}
-          onChange={handleChange}
-          placeholder="ISBN"
-          required
-          className="border p-2 rounded"
-        />
-        <input
-          type="number"
-          name="publishedYear"
-          value={form.publishedYear}
-          onChange={handleChange}
-          placeholder="Published Year"
-          required
-          className="border p-2 rounded"
-        />
-        <div className="flex space-x-4">
-          <button
-            type="submit"
-            className="bg-green-600 text-white p-2 rounded hover:bg-green-700 transition"
-          >
-            Update Book
-          </button>
-          <button
-            type="button"
-            onClick={() => router.push(`/books`)}
-            className="bg-gray-400 text-white p-2 rounded hover:bg-gray-500 transition"
-          >
-            Cancel
-          </button>
-        </div>
-      </form>
+  
+
+<div className="w-full max-w-md p-6 mx-auto sm:w-2/3 md:w-1/2 lg:w-1/3">
+  
+  <h1 className="text-2xl font-bold mb-4">Edit Book</h1>
+  <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+    <label className="flex flex-col gap-1">
+      Title
+      <input
+        type="text"
+        name="title"
+        placeholder="Enter book title"
+        value={form.title}
+        onChange={handleChange}
+        required
+        className="p-2 rounded border border-gray-300 focus:outline-none focus:border-blue-500"
+      />
+    </label>
+
+    <label className="flex flex-col gap-1">
+      Author
+      <input
+        type="text"
+        name="author"
+        placeholder="Enter author name"
+        value={form.author}
+        onChange={handleChange}
+        required
+        className="p-2 rounded border border-gray-300 focus:outline-none focus:border-blue-500"
+      />
+    </label>
+
+    <label className="flex flex-col gap-1">
+      ISBN
+      <input
+        type="text"
+        name="isbn"
+        placeholder="Enter ISBN number"
+        value={form.isbn}
+        onChange={handleChange}
+        required
+        className="p-2 rounded border border-gray-300 focus:outline-none focus:border-blue-500"
+      />
+    </label>
+
+    <label className="flex flex-col gap-1">
+      Published Year
+      <input
+        type="number"
+        name="publishedYear"
+        placeholder="E.g., 2023"
+        value={form.publishedYear}
+        onChange={handleChange}
+        required
+        className="p-2 rounded border border-gray-300 focus:outline-none focus:border-blue-500"
+      />
+    </label>
+
+    <div className="flex space-x-4">
+      <button
+        type="submit"
+        className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition flex-grow"
+      >
+        Update Book
+      </button>
+      <button
+        type="button"
+        onClick={() => router.push(`/books`)}
+        className="bg-gray-400 text-white py-2 px-4 rounded hover:bg-gray-500 transition flex-grow"
+      >
+        Cancel
+      </button>
     </div>
+  </form>
+</div>
+
   );
 }

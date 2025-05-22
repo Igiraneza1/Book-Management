@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function NewBookPage() {
   const router = useRouter();
@@ -30,6 +31,7 @@ export default function NewBookPage() {
 
   return (
     <div className="w-1/3 p-6">
+      <Link href='/books' className="mb-3 hover:underline text-blue-500 hover:text-blue-700">Return</Link>
       <h1 className="text-2xl font-bold mb-4">Add New Book</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <label className="flex flex-col gap-1">
