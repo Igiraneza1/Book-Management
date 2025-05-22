@@ -3,33 +3,34 @@
 import React, { useState, useEffect } from "react";
 import { Book } from "../../types/book";
 
-type BookForm = {
+// ✅ Renamed type to BookFormProps
+type BookFormProps = {
   isEdit: boolean;
   initialData?: Book;
   onSubmit: (formData: Book) => void;
   loading: boolean;
 };
 
-const BookForm = ({ isEdit, initialData, onSubmit, loading }: BookForm) => {
+const BookForm = ({ isEdit, initialData, onSubmit, loading }: BookFormProps) => {
   const [formData, setFormData] = useState<Book>({
     _id: "",
     title: "",
     author: "",
     isbn: "",
-    publishedYear: 0, // optional if needed
+    publishedYear: 0,
   });
 
   useEffect(() => {
-      if (initialData) {
-        setFormData({
-          _id: initialData._id || "",
-          title: initialData.title || "",
-          author: initialData.author || "",
-          isbn: initialData.isbn,
-          publishedYear: initialData.publishedYear,
-        });
-      }
-    }, [initialData]);
+    if (initialData) {
+      setFormData({
+        _id: initialData._id || "",
+        title: initialData.title || "",
+        author: initialData.author || "",
+        isbn: initialData.isbn,
+        publishedYear: initialData.publishedYear,
+      });
+    }
+  }, [initialData]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -93,11 +94,11 @@ const BookForm = ({ isEdit, initialData, onSubmit, loading }: BookForm) => {
       </div>
 
       <div>
-        <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="publishedYear" className="block text-sm font-medium text-gray-700">
           Year
         </label>
         <input
-        type="number"
+          type="number"
           id="publishedYear"
           name="publishedYear"
           value={formData.publishedYear}
@@ -105,7 +106,6 @@ const BookForm = ({ isEdit, initialData, onSubmit, loading }: BookForm) => {
           className="w-full mt-1 px-4 py-2 border rounded-md shadow-sm focus:ring focus:ring-blue-200"
         />
       </div>
-
 
       <button
         type="submit"
