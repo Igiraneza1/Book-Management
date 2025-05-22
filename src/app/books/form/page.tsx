@@ -3,14 +3,14 @@
 import React, { useState, useEffect } from "react";
 import { Book } from "../../types/book";
 
-type BookFormProps = {
+type BookForm = {
   isEdit: boolean;
   initialData?: Book;
   onSubmit: (formData: Book) => void;
   loading: boolean;
 };
 
-const BookForm = ({ isEdit, initialData, onSubmit, loading }: BookFormProps) => {
+const BookForm = ({ isEdit, initialData, onSubmit, loading }: BookForm) => {
   const [formData, setFormData] = useState<Book>({
     _id: "",
     title: "",

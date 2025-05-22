@@ -38,7 +38,7 @@ export default function BookDetailsPage() {
     );
 
   return (
-    <div className="p-6 sm:p-8 max-w-full sm:max-w-xl mx-auto bg-gray-200 shadow-md rounded-md">
+    <div className="p-6 sm:p-8 max-w-full sm:max-w-xl bg-gray-200 shadow-md rounded-md">
       <h1 className="text-2xl sm:text-4xl font-extrabold mb-6 ">{book.title}</h1>
       <div className="space-y-4 text-gray-800 text-base sm:text-lg">
         <p>
